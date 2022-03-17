@@ -34,7 +34,7 @@ pipeline {
        
        stage('Code coverage') {
             steps {
-              sh "mvn org.jacoco:jacoco-maven-plugin:prepare-agent -f ${pomPath} clean test -Dautoconfig.skip=true -Dmaven.test.skip=false -Dmaven.test.failure.ignore=true"
+              sh "mvn jacoco:jacoco "
               junit '**/target/surefire-reports/*.xml'
               jacoco changeBuildStatus: true, maximumLineCoverage:"20"
             }
