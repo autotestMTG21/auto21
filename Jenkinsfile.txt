@@ -31,23 +31,17 @@ pipeline {
                  }
              }
         }
+       
+       stage('Code coverage') {
+            steps {
+              sh "mvn org.jacoco:jacoco-maven-plugin:prepare-agent -f ${pomPath} clean test -Dautoconfig.skip=true -Dmaven.test.skip=false -Dmaven.test.failure.ignore=true"
+              junit '**/target/surefire-reports/*.xml'
+              jacoco changeBuildStatus: true, maximumLineCoverage:"20"
+            }
+        }
 
-      stage('Codechecking') {
-          steps {
-                echo "starting codeAnalyze with SonarQube......"
-                withSonarQubeEnv('SonarQube Server') {
-                 sh "mvn -f pom.xml clean compile sonar:sonar "
-                }
-                script {
-                timeout(10) { 
-                        def qg = waitForQualityGate() 
-                                if (qg.status != 'OK') {
-                                        error "Not pass Sonarqube codechecking! failure: ${qg.status}"
-                                }
-                         }
-                }
-          }
-       }
+
+
         stage('Robot Framework System tests with Selenium') {
             steps {
                 sh ' robot --variable BROWSER:headlesschrome -d Results Tests'
