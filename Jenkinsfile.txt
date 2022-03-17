@@ -34,9 +34,7 @@ pipeline {
        
        stage('Code coverage') {
             steps {
-              sh " mvn  jacoco:jacoco "
-              junit '**/target/surefire-reports/*.xml'
-              jacoco changeBuildStatus: true, maximumLineCoverage:"20"
+              sh " mvn  clean cobertura:cobertura "
             }
         }
 
