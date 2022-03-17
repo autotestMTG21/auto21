@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/autotestMTG21/auto21.git'
+                git 'https://github.com/InfotivPeter/labb21.git'
             }
         }
         stage('Build') {
@@ -55,6 +55,12 @@ pipeline {
                 }
             }
         }
-     
+       
+       stage(''){
+          steps{
+              sh ' '
+          }
+	
+       }
     }
 }
