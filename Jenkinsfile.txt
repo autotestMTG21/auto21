@@ -55,7 +55,23 @@ pipeline {
                 }
             }
         }
-       
+      
+      stage('Codechecking') {
+          steps {
+                echo "starting codeAnalyze with SonarQube......"
+                withSonarQubeEnv('SonarQube Server') {
+                 sh "mvn -f pom.xml clean compile sonar:sonar "
+                }
+                script {
+                timeout(10) { 
+                        def qg = waitForQualityGate() 
+                                if (qg.status != 'OK') {
+                                        error "Not pass Sonarqube codechecking! failure: ${qg.status}"
+                                }
+                         }
+                }
+         }
+ }
       
     }
 }
