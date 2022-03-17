@@ -1,6 +1,9 @@
 pipeline {
     agent any
     stages {
+       tools {
+        maven 'maven'
+        }
         stage('Checkout') {
             steps {
                 git 'https://github.com/autotestMTG21/auto21.git'
