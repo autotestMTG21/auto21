@@ -31,6 +31,23 @@ pipeline {
                  }
              }
         }
+
+      stage('Codechecking') {
+          steps {
+                echo "starting codeAnalyze with SonarQube......"
+                withSonarQubeEnv('SonarQube Server') {
+                 sh "mvn -f pom.xml clean compile sonar:sonar "
+                }
+                script {
+                timeout(10) { 
+                        def qg = waitForQualityGate() 
+                                if (qg.status != 'OK') {
+                                        error "Not pass Sonarqube codechecking! failure: ${qg.status}"
+                                }
+                         }
+                }
+          }
+       }
         stage('Robot Framework System tests with Selenium') {
             steps {
                 sh ' robot --variable BROWSER:headlesschrome -d Results Tests'
@@ -55,23 +72,6 @@ pipeline {
                 }
             }
         }
-      
-      stage('Codechecking') {
-          steps {
-                echo "starting codeAnalyze with SonarQube......"
-                withSonarQubeEnv('SonarQube Server') {
-                 sh "mvn -f pom.xml clean compile sonar:sonar "
-                }
-                script {
-                timeout(10) { 
-                        def qg = waitForQualityGate() 
-                                if (qg.status != 'OK') {
-                                        error "Not pass Sonarqube codechecking! failure: ${qg.status}"
-                                }
-                         }
-                }
-         }
- }
-      
+       
     }
 }
