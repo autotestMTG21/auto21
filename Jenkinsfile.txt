@@ -35,7 +35,12 @@ pipeline {
        stage('Code Coverage') {
             steps {
               sh " mvn  clean  cobertura:cobertura "
-            }
+             }
+             post{
+                 always {
+                         junit '**/TEST*.xml'
+                 }
+             }
         }
 
         stage('Robot Framework System tests with Selenium') {
