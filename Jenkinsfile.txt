@@ -36,12 +36,32 @@ pipeline {
             steps {
               sh " mvn  clean cobertura:cobertura package"
              }
+             post {
+                always {
+
+                    step(
+                        [
+                           $class: 'CoberturaPublisher', 
+                           autoUpdateHealth: false, 
+                           autoUpdateStability: false, 
+                           coberturaReportFile: '**/coverage.xml', 
+                           failUnhealthy: false, 
+                           failUnstable: false, 
+                           maxNumberOfBuilds: 0,
+                           onlyStable: false, 
+                           sourceEncoding: 'ASCII', 
+                           zoomCoverageChart: false
+                          ]
+                    )
+
+                }
+            }
         }
 
         stage('Robot Framework System tests with Selenium') {
             steps {
                 sh ' robot --variable BROWSER:headlesschrome -d Results Tests'
-            }
+             }
             post {
                 always {
                     script {
