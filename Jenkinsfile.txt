@@ -35,7 +35,11 @@ pipeline {
        stage('Code Coverage') {
             steps {
               sh " mvn  clean  cobertura:cobertura "
-              publishCoverage adapters: [cobertura ('target/surefire-reports/*.xml')]
+             }
+             post {
+                  always {
+                      cobertura coberturaReportFile: '*/.xml'
+                   }
              }
              
         }
