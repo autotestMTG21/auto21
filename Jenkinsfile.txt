@@ -34,7 +34,7 @@ pipeline {
        
        stage('Code Coverage') {
             steps {
-              sh " mvn  cobertura:cobertura "
+              sh " mvn  clean cobertura:cobertura package"
              }
         }
 
