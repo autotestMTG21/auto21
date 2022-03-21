@@ -34,14 +34,8 @@ pipeline {
        
        stage('Code Coverage') {
             steps {
-              sh " mvn  clean  cobertura:cobertura "
+              sh " mvn  cobertura:cobertura "
              }
-             post {
-                  always {
-                      cobertura coberturaReportFile: '*/.xml'
-                   }
-             }
-             
         }
 
         stage('Robot Framework System tests with Selenium') {
