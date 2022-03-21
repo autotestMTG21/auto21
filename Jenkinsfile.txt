@@ -35,12 +35,9 @@ pipeline {
        stage('Code Coverage') {
             steps {
               sh " mvn  clean  cobertura:cobertura "
+              publishCoverage adapters: [jacoco('target/surefire-reports/*.xml')]
              }
-             post{
-                 always {
-                         junit '**/TEST*.xml'
-                 }
-             }
+             
         }
 
         stage('Robot Framework System tests with Selenium') {
