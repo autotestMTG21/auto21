@@ -77,11 +77,11 @@ pipeline {
 
          stage('newman') {
             steps {
-                sh  'newman run Labb_Postman.postman_collection.json --environment Labb_Postman_Enviroment.postman_environment.json --reporters junit'
+                sh  'newman run Labb_Postman.postman_collection.json --e Labb_Postman_Enviroment.postman_environment.json --reporters junit'
             }
             post {
                 always {
-                        junit '**/TEST*.xml'
+                        junit '**/*xml'
                  }
              }
         }
